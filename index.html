@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>AI每日情报 - 2026.3.3</title>
+    <style>
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #141829;
+            --surface1: #1a1f3a;
+            --surface2: #242942;
+            --border: rgba(99, 102, 241, 0.15);
+            --text-primary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --purple: #a78bfa;
+            --blue: #60a5fa;
+            --deep-blue: #3b82f6;
+            --green: #22c55e;
+            --cyan: #2dd4bf;
+            --sky: #38bdf8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            padding: 48px 20px 32px;
+            background: linear-gradient(180deg, rgba(26, 31, 58, 0.8) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border: 1.5px solid var(--blue);
+            border-radius: 24px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 18px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #667eea, #764ba2, #a78bfa, #60a5fa, #3b82f6);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 8s ease infinite;
+        }
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .header-meta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            font-size: 15px;
+            color: #a5b4fc;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 20px 40px;
+        }
+        .section {
+            background: var(--surface1);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .section-toggle {
+            width: 100%;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: background 0.2s;
+        }
+        .section-toggle:hover { background: rgba(255, 255, 255, 0.02); }
+        .section-icon { font-size: 28px; line-height: 1; }
+        .section-header { flex: 1; }
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0.5;
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+        }
+        .count-pill {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .chevron {
+            font-size: 20px;
+            transition: transform 0.3s;
+            opacity: 0.5;
+        }
+        .section.collapsed .chevron { transform: rotate(-90deg); }
+        .section-body {
+            padding: 0 28px 32px;
+            display: none;
+        }
+        .section.expanded .section-body { display: block; }
+        
+        .meta-insight .section-label { color: var(--purple); }
+        .meta-insight .count-pill { background: rgba(167, 139, 250, 0.2); color: var(--purple); }
+        .meta-card {
+            background: var(--surface2);
+            border-left: 4px solid var(--purple);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .meta-card h4 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--purple);
+            margin-bottom: 14px;
+        }
+        .meta-card ul { list-style: none; }
+        .meta-card ul li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .meta-card ul li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--purple);
+            font-weight: bold;
+        }
+        
+        .industry .section-label { color: var(--blue); }
+        .industry .count-pill { background: rgba(96, 165, 250, 0.2); color: var(--blue); }
+        .industry .news-item { border-left-color: var(--blue); }
+        .industry .fact-col h4 { color: var(--blue); }
+        
+        .investment .section-label { color: var(--deep-blue); }
+        .investment .count-pill { background: rgba(59, 130, 246, 0.2); color: var(--deep-blue); }
+        .investment .news-item { border-left-color: var(--deep-blue); }
+        .investment .fact-col h4 { color: var(--deep-blue); }
+        
+        .breakthrough .section-label { color: var(--green); }
+        .breakthrough .count-pill { background: rgba(34, 197, 94, 0.2); color: var(--green); }
+        .breakthrough .news-item { border-left-color: var(--green); }
+        .breakthrough .fact-col h4 { color: var(--green); }
+        
+        .product .section-label { color: var(--cyan); }
+        .product .count-pill { background: rgba(45, 212, 191, 0.2); color: var(--cyan); }
+        .product .news-item { border-left-color: var(--cyan); }
+        .product .fact-col h4 { color: var(--cyan); }
+        
+        .education .section-label { color: var(--sky); }
+        .education .count-pill { background: rgba(56, 189, 248, 0.2); color: var(--sky); }
+        .education .news-item { border-left-color: var(--sky); }
+        .education .fact-col h4 { color: var(--sky); }
+        
+        .news-item {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            padding-left: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-left: 4px solid;
+        }
+        .news-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .news-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .score-badge {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(96, 165, 250, 0.2));
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+        }
+        .news-title {
+            flex: 1;
+            min-width: 200px;
+        }
+        .news-title a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            display: block;
+        }
+        .news-title a:hover { color: var(--blue); }
+        .source-tag {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 4px;
+        }
+        
+        /* 关键：4列横排 */
+        .fact-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 16px;
+        }
+        .fact-col h4 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+        .fact-col p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #d4d8e8;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .expandable {
+            margin-top: 16px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .expand-btn {
+            width: 100%;
+            background: none;
+            border: 2px solid;
+            padding: 10px 16px;
+            color: inherit;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            border-radius: 10px;
+        }
+        .expand-btn:hover { background: rgba(255, 255, 255, 0.05); }
+        .expand-content {
+            display: none;
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .expandable.open .expand-content { display: block; }
+        .expandable.open .expand-btn .chevron { transform: rotate(180deg); }
+        
+        .startup-card {
+            border-color: rgba(96,165,250,0.4);
+            background: rgba(96,165,250,0.05);
+        }
+        .startup-card .expand-btn {
+            border-color: rgba(96,165,250,0.4);
+            color: var(--blue);
+        }
+        .stock-card {
+            border-color: rgba(34,197,94,0.4);
+            background: rgba(34,197,94,0.05);
+        }
+        .stock-card .expand-btn {
+            border-color: rgba(34,197,94,0.4);
+            color: var(--green);
+        }
+        .stock-score-item {
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .stats-footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px 16px 20px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--blue);
+            line-height: 1;
+            margin-bottom: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .footer-credit {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+            letter-spacing: 0.5px;
+        }
+        
+        @media (max-width: 860px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .fact-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 680px) {
+            body { font-size: 14px; }
+            .header { padding: 32px 16px 22px; }
+            .header h1 { font-size: 2rem; }
+            .header-meta { font-size: 12px; gap: 14px; }
+            .header-badge { font-size: 9px; letter-spacing: 1px; }
+            .container { padding: 16px 12px 20px; }
+            .stats-footer { padding: 0 12px 40px; }
+            .section { margin-bottom: 14px; border-radius: 10px; }
+            .section-body { padding: 0 14px 20px; }
+            .section-toggle { padding: 14px 16px; }
+            .section-icon { font-size: 22px; }
+            .section-title { font-size: 18px; }
+            .section-label { font-size: 10px; }
+            .news-item { padding-left: 12px; margin-bottom: 28px; padding-bottom: 22px; }
+            .news-header { gap: 8px; margin-bottom: 10px; }
+            .news-title a { font-size: 15px; }
+            .score-badge { font-size: 11px; padding: 2px 7px; }
+            .fact-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .fact-col h4 { font-size: 11px; }
+            .fact-col p { font-size: 13px; line-height: 1.7; }
+            .meta-card { padding: 14px; margin-top: 14px; }
+            .meta-card h4 { font-size: 11px; }
+            .meta-card ul li { font-size: 13px; }
+            .startup-card, .stock-card { font-size: 13px; padding: 12px; }
+            .expand-btn { font-size: 11px; }
+            .count-pill { font-size: 10px; padding: 1px 7px; }
+            .source-tag { font-size: 10px; }
+            .footer-credit { font-size: 12px; }
+        }
+        @media (max-width: 420px) {
+            .fact-grid { grid-template-columns: 1fr; gap: 12px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-badge">LIVE · AI INTELLIGENCE DAILY</div>
+        <h1><span class="gradient-text">AI每日情报</span></h1>
+        <div class="header-meta">
+            <span>2026.3.3</span>
+            <span>实时抓取</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="section meta-insight expanded">
+            <button class="section-toggle" onclick="toggleSection(this)">
+                <span class="section-icon">💡</span>
+                <div class="section-header">
+                    <div class="section-label">META_INSIGHT</div>
+                    <div class="section-title">元洞察</div>
+                </div>
+                <span class="count-pill">4</span>
+                <span class="chevron">▼</span>
+            </button>
+            <div class="section-body">
+                <div class="meta-card">
+                    <h4>🔍 今日趋势扫描</h4>
+                    <ul>
+                        <li><strong>基础设施争夺白热化</strong> - NVIDIA押注光子学(40亿美元)、Apple依赖Google云算力,硬件供应链重构加速</li>
+                        <li><strong>监管与安全成主战场</strong> - OpenAI修改五角大楼协议、联合国成立40人AI专家组,技术伦理从边缘走向核心</li>
+                        <li><strong>中国AI突围提速</strong> - DeepSeek V4本周发布(首个多模态旗舰),华为/寒武纪芯片成关键变量</li>
+                        <li><strong>AI裁员争议升级</strong> - Block裁员4000人(40%员工),引发"AI洗白"质疑,劳动力市场进入敏感期</li>
+                    </ul>
+                </div>
+                <div class="meta-card">
+                    <h4>🔗 跨板块关联</h4>
+                    <ul>
+                        <li>NVIDIA投资光子学 → 数据中心互联成AI瓶颈 → 美中两条供应链并行发展</li>
+                        <li>OpenAI修改军方协议 → Anthropic拒绝被标签化 → 科技公司政治影响力测试</li>
+                        <li>DeepSeek优化华为芯片 → 绕开美国出口管制 → MoE架构降低算力依赖</li>
+                    </ul>
+                </div>
+                <div class="meta-card">
+                    <h4>💼 创业方向建议</h4>
+                    <ul>
+                        <li><strong>短期(3-6月)</strong> - AI裁员咨询/员工再培训平台;光子学供应链周边服务</li>
+                        <li><strong>中期(6-12月)</strong> - AI合规审计工具(军民两用场景);开源模型微调服务(DeepSeek生态)</li>
+                        <li><strong>长期(1-2年)</strong> - 光子计算芯片初创;AI驱动的精益组织架构咨询</li>
+                    </ul>
+                </div>
+                <div class="meta-card">
+                    <h4>⚠️ 风险预警</h4>
+                    <ul>
+                        <li><strong>监管风险</strong> - AI军事应用红线模糊,科技公司面临政治站队压力</li>
+                        <li><strong>就业冲击</strong> - Block式裁员或引发连锁反应,白领岗位AI替代加速</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section investment collapsed">
+            <button class="section-toggle" onclick="toggleSection(this)">
+                <span class="section-icon">💰</span>
+                <div class="section-header">
+                    <div class="section-label">INVESTMENT</div>
+                    <div class="section-title">投资融资</div>
+                </div>
+                <span class="count-pill">1</span>
+                <span class="chevron">▼</span>
+            </button>
+            <div class="section-body">
+                <div class="news-item">
+                    <div class="news-header">
+                        <div class="score-badge">9.2</div>
+                        <div class="news-title">
+                            <a href="https://www.cnbc.com/2026/03/02/nvidia-investment-coherent-lumentum.html" target="_blank">NVIDIA投资40亿美元布局光子学供应链,锁定Lumentum与Coherent</a>
+                            <div class="source-tag">CNBC · 2026.03.02</div>
+                        </div>
+                    </div>
+                    <div class="fact-grid">
+                        <div class="fact-col">
+                            <h4>What 是什么</h4>
+                            <p>NVIDIA宣布各投资<strong>20亿美元</strong>于光子学公司Lumentum和Coherent,包含多年采购承诺和产能优先权,双方将建设<strong>美国本土fab</strong>。这是AI基础设施从铜缆向光互联转型的关键布局。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>How 怎么做</h4>
+                            <p>协议结构:①多年期采购承诺;②产能优先权;③研发深度合作。Lumentum专注<strong>硅光子学</strong>,Coherent提供<strong>激光&光网络产品</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>Why 为什么</h4>
+                            <p>AI集群已触及<strong>互联带宽瓶颈</strong>:铜缆在延迟、功耗、热管理上无法满足<strong>千兆瓦级AI工厂</strong>需求。光子学承诺更高吞吐量+更低能耗。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>影响与行动</h4>
+                            <p><strong>产业影响</strong>:NVIDIA从GPU供应商扩展为<strong>全栈数据中心控制者</strong>;光子学赛道进入规模化阶段。<strong>竞争动态</strong>:AMD、Intel面临压力。</p>
+                        </div>
+                    </div>
+                    <div class="expandable startup-card">
+                        <button class="expand-btn" onclick="toggleExpand(this)">
+                            <span>💡 创业灵感</span>
+                            <span class="chevron">▼</span>
+                        </button>
+                        <div class="expand-content">
+                            <strong>做什么:</strong> 光子学周边工具链(EDA软件、测试设备、封装服务)<br>
+                            <strong>切入点:</strong> NVIDIA采购协议释放明确需求信号,fab建设周期2-3年,现在布局测试/封装服务可卡位<br>
+                            <strong>为什么现在:</strong> 大厂锁定核心供应商后,二级供应商机会窗口打开
+                        </div>
+                    </div>
+                    <div class="expandable stock-card">
+                        <button class="expand-btn" onclick="toggleExpand(this)">
+                            <span>📈 股票联动</span>
+                            <span class="chevron">▼</span>
+                        </button>
+                        <div class="expand-content">
+                            <strong>【A股强关联标的】光迅科技(002281) 综合分4.2分🔴</strong><br><br>
+                            <strong>评分明细:</strong><br>
+                            <div class="stock-score-item">• Logic(逻辑链): 5/5 - 国内硅光子龙头,800G产品已量产,直接对标Lumentum业务</div>
+                            <div class="stock-score-item">• Timing(时效): 4/5 - 消息刚发酵期,但光子学概念已有预期</div>
+                            <div class="stock-score-item">• Certainty(确定性): 4/5 - NVIDIA订单不会直接流向A股,但验证技术路线正确性</div>
+                            <div class="stock-score-item">• Position(地位): 4.5/5 - 国内市占率第一,但全球份额<5%</div>
+                            <div class="stock-score-item">• Linkage(关联度): 4/5 - 国产替代逻辑叠加光模块升级周期</div><br>
+                            <strong>投资逻辑:</strong> NVIDIA布局验证了硅光子学是AI数据中心必选项,国内厂商受益于中国数据中心建设提速。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section industry collapsed">
+            <button class="section-toggle" onclick="toggleSection(this)">
+                <span class="section-icon">📡</span>
+                <div class="section-header">
+                    <div class="section-label">INDUSTRY</div>
+                    <div class="section-title">行业动态</div>
+                </div>
+                <span class="count-pill">3</span>
+                <span class="chevron">▼</span>
+            </button>
+            <div class="section-body">
+                <div class="news-item">
+                    <div class="news-header">
+                        <div class="score-badge">9.5</div>
+                        <div class="news-title">
+                            <a href="https://www.axios.com/2026/03/03/openai-pentagon-ai-surveillance" target="_blank">OpenAI修改五角大楼协议,明确禁止AI用于美国公民监控</a>
+                            <div class="source-tag">Axios · 2026.03.03 (持续事件 02.28起)</div>
+                        </div>
+                    </div>
+                    <div class="fact-grid">
+                        <div class="fact-col">
+                            <h4>What 是什么</h4>
+                            <p>OpenAI与五角大楼重新协商合同,新增条款明确AI系统<strong>"不得故意用于美国公民的国内监控"</strong>,包括禁止采购商业化个人数据。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>How 怎么做</h4>
+                            <p>修订内容:①禁止"deliberate tracking, surveillance of U.S. persons";②禁用NSA等情报机构需额外修改合同;③OpenAI保留安全栈控制权。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>Why 为什么</h4>
+                            <p>Anthropic因拒绝"all lawful purposes"框架被列为<strong>供应链风险</strong>,OpenAI抓住机会签约但遭舆论反噬。修改系Altman主动要求。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>影响与行动</h4>
+                            <p><strong>政治信号</strong>:科技公司vs政府博弈进入新阶段,红线从policy升级为<strong>合同条款+架构限制</strong>。<strong>用户反应</strong>:QuitGPT运动、Claude登顶。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-header">
+                        <div class="score-badge">8.8</div>
+                        <div class="news-title">
+                            <a href="https://www.cnn.com/2026/02/26/business/block-layoffs-ai-jack-dorsey" target="_blank">Block裁员40%引爆AI就业争议,Jack Dorsey称"多数公司一年内跟进"</a>
+                            <div class="source-tag">CNN · 2026.02.26 (持续事件 02.26起)</div>
+                        </div>
+                    </div>
+                    <div class="fact-grid">
+                        <div class="fact-col">
+                            <h4>What 是什么</h4>
+                            <p>Block一次性裁员<strong>4000人</strong>(40%),CEO Jack Dorsey明确归因于"intelligence tools"让<strong>更小团队完成更多工作</strong>。股价暴涨24%。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>How 怎么做</h4>
+                            <p>赔偿:20周薪资+每年工龄1周+股权至5月底+6个月医保+5000美元。Dorsey称宁愿"一次性痛苦"而非反复裁员。非财务困境,而是<strong>组织架构重构</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>Why 为什么</h4>
+                            <p>深层逻辑:①疫情期过度招聘;②AI能力"compounding faster";③Dorsey认为"扁平化+AI工具"是新范式。批评:多数"AI裁员"实为<strong>财务驱动的AI洗白</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>影响与行动</h4>
+                            <p><strong>信号意义</strong>:首个S&P 500公司公开将<strong>近半员工裁员归因AI</strong>。<strong>市场反应</strong>:股价大涨验证华尔街认可精益化。<strong>争议焦点</strong>:AI生产力飞跃还是降本概念?</p>
+                        </div>
+                    </div>
+                    <div class="expandable stock-card">
+                        <button class="expand-btn" onclick="toggleExpand(this)">
+                            <span>📈 股票联动</span>
+                            <span class="chevron">▼</span>
+                        </button>
+                        <div class="expand-content">
+                            <strong>【A股关联标的】拉卡拉(300773) 综合分3.2分🟡</strong><br><br>
+                            <div class="stock-score-item">• Logic: 3/5 - 同为支付科技,但体量、AI能力差距大</div>
+                            <div class="stock-score-item">• Timing: 3/5 - Block消息对A股影响有限</div>
+                            <div class="stock-score-item">• Certainty: 2/5 - A股支付公司AI应用尚处早期</div>
+                            <div class="stock-score-item">• Position: 4/5 - 国内第三方支付前三</div>
+                            <div class="stock-score-item">• Linkage: 3/5 - 概念联想多于实质利好</div><br>
+                            <strong>投资逻辑:</strong> Block案例可能启发A股支付公司通过AI降本,但国内监管环境、劳动法保护更严,难复制40%裁员。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-header">
+                        <div class="score-badge">8.5</div>
+                        <div class="news-title">
+                            <a href="https://news.un.org/en/story/2026/03/1167074" target="_blank">联合国成立40人AI专家组,秘书长呼吁"科学引领治理"</a>
+                            <div class="source-tag">UN News · 2026.03.03</div>
+                        </div>
+                    </div>
+                    <div class="fact-grid">
+                        <div class="fact-col">
+                            <h4>What 是什么</h4>
+                            <p>联合国秘书长古特雷斯召集<strong>独立国际AI科学专家组</strong>(40人),目标是"弥合AI知识鸿沟",为各国提供基于科学的影响评估。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>How 怎么做</h4>
+                            <p>专家组成员来自<strong>多地区、跨学科</strong>,包括诺贝尔奖得主Maria Ressa。任务:评估AI对经济、社会的真实影响,输出类似IPCC的权威报告。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>Why 为什么</h4>
+                            <p>AI"以闪电般速度发展",但<strong>无国家/公司能单独看清全貌</strong>。古特雷斯警告"缺乏事实时恐惧蔓延、信任崩塌",需要<strong>共享的全球AI理解</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>影响与行动</h4>
+                            <p><strong>规范化进程</strong>:继欧盟AI Act、美国行政令后,联合国推动<strong>多边科学共识</strong>。<strong>企业影响</strong>:大模型公司需准备更严格的<strong>透明度要求</strong>。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section breakthrough collapsed">
+            <button class="section-toggle" onclick="toggleSection(this)">
+                <span class="section-icon">🚀</span>
+                <div class="section-header">
+                    <div class="section-label">BREAKTHROUGH</div>
+                    <div class="section-title">技术突破</div>
+                </div>
+                <span class="count-pill">1</span>
+                <span class="chevron">▼</span>
+            </button>
+            <div class="section-body">
+                <div class="news-item">
+                    <div class="news-header">
+                        <div class="score-badge">9.0</div>
+                        <div class="news-title">
+                            <a href="https://finance.yahoo.com/news/deepseek-release-long-awaited-ai-162425187.html" target="_blank">DeepSeek V4本周发布:首个多模态旗舰,优化华为/寒武纪芯片</a>
+                            <div class="source-tag">Financial Times/Yahoo · 2026.03.02 (持续事件 01.28起)</div>
+                        </div>
+                    </div>
+                    <div class="fact-grid">
+                        <div class="fact-col">
+                            <h4>What 是什么</h4>
+                            <p>DeepSeek将于本周发布V4,这是其<strong>一年来首个旗舰模型</strong>。关键特性:①多模态;②万亿参数MoE;③100万token上下文;④<strong>专为华为Ascend+寒武纪芯片优化</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>How 怎么做</h4>
+                            <p>架构创新:①保留MLA;②新增Manifold-Constrained Hyper-Connections;③Engram Conditional Memory。<strong>硬件策略</strong>:未与NVIDIA合作,直接锁定国产芯片。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>Why 为什么</h4>
+                            <p>美国出口管制迫使<strong>技术独立</strong>。R1引发"Sputnik moment"。V4时机:①两会前展示"国家AI冠军"地位;②证明开源+低成本路线可持续。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>影响与行动</h4>
+                            <p><strong>技术路线分化</strong>:中美AI生态<strong>硬件解耦</strong>。<strong>成本革命</strong>:若延续R1成本优势,全球AI定价体系将重塑。<strong>开源生态</strong>:MIT许可证发布将加速本地部署浪潮。</p>
+                        </div>
+                    </div>
+                    <div class="expandable stock-card">
+                        <button class="expand-btn" onclick="toggleExpand(this)">
+                            <span>📈 股票联动</span>
+                            <span class="chevron">▼</span>
+                        </button>
+                        <div class="expand-content">
+                            <strong>【A股强关联标的】寒武纪(688256) 综合分4.5分🔴</strong><br><br>
+                            <div class="stock-score-item">• Logic: 5/5 - DeepSeek V4明确优化寒武纪芯片,直接验证产品力</div>
+                            <div class="stock-score-item">• Timing: 5/5 - 消息新鲜,V4本周发布前窗口期</div>
+                            <div class="stock-score-item">• Certainty: 4/5 - DeepSeek高管已确认合作</div>
+                            <div class="stock-score-item">• Position: 4/5 - 国产AI芯片龙头</div>
+                            <div class="stock-score-item">• Linkage: 5/5 - 唯一明确被DeepSeek点名的A股标的</div><br>
+                            <strong>投资逻辑:</strong> DeepSeek选择寒武纪是<strong>技术实力认证</strong>。催化剂:V4发布后性能对标若达预期,验证寒武纪可支撑frontier模型。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section product collapsed">
+            <button class="section-toggle" onclick="toggleSection(this)">
+                <span class="section-icon">✨</span>
+                <div class="section-header">
+                    <div class="section-label">PRODUCT</div>
+                    <div class="section-title">产品上线</div>
+                </div>
+                <span class="count-pill">1</span>
+                <span class="chevron">▼</span>
+            </button>
+            <div class="section-body">
+                <div class="news-item">
+                    <div class="news-header">
+                        <div class="score-badge">8.3</div>
+                        <div class="news-title">
+                            <a href="https://www.cnbc.com/2026/01/12/apple-google-ai-siri-gemini.html" target="_blank">Apple确认Siri大改版:由Google Gemini驱动,3月随iOS 26.4发布</a>
+                            <div class="source-tag">CNBC · 2026.01.12 (持续事件 01.12起)</div>
+                        </div>
+                    </div>
+                    <div class="fact-grid">
+                        <div class="fact-col">
+                            <h4>What 是什么</h4>
+                            <p>Apple与Google达成<strong>多年协议</strong>,使用Gemini 1.2万亿参数模型驱动<strong>下一代Siri</strong>,实现"屏幕感知"和跨应用集成。iOS 26.4 Beta版2月发布,<strong>3月正式推送</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>How 怎么做</h4>
+                            <p>技术架构:①Gemini处理Siri的<strong>summarizer & planner</strong>功能;②运行在<strong>Apple Private Cloud Compute</strong>上;③<strong>白标合作</strong>:用户界面无Google品牌。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>Why 为什么</h4>
+                            <p>战略转折:①Siri已落后ChatGPT/Gemini多年;②Apple内部AI基础设施<strong>"开始衰败"</strong>;③与OpenAI合作仅限特定查询,Gemini是<strong>全栈方案</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>影响与行动</h4>
+                            <p><strong>产业格局</strong>:Google扳回一局,Gemini成<strong>premier AI model</strong>标志;Apple罕见依赖外部技术。<strong>竞争动态</strong>:OpenAI的ChatGPT集成地位被削弱。</p>
+                        </div>
+                    </div>
+                    <div class="expandable stock-card">
+                        <button class="expand-btn" onclick="toggleExpand(this)">
+                            <span>📈 股票联动</span>
+                            <span class="chevron">▼</span>
+                        </button>
+                        <div class="expand-content">
+                            <strong>【A股关联标的】科大讯飞(002230) 综合分3.0分🟡</strong><br><br>
+                            <div class="stock-score-item">• Logic: 3/5 - 同为语音助手,但技术路线、生态差异大</div>
+                            <div class="stock-score-item">• Timing: 2/5 - 消息已公布近2个月</div>
+                            <div class="stock-score-item">• Certainty: 3/5 - Apple-Google合作不直接影响A股</div>
+                            <div class="stock-score-item">• Position: 4/5 - 国内智能语音龙头</div>
+                            <div class="stock-score-item">• Linkage: 3/5 - 概念关联,实质利好有限</div><br>
+                            <strong>投资逻辑:</strong> Siri升级验证了<strong>AI原生重构语音助手</strong>的趋势,更多是<strong>主题投资机会</strong>。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section education collapsed">
+            <button class="section-toggle" onclick="toggleSection(this)">
+                <span class="section-icon">🎓</span>
+                <div class="section-header">
+                    <div class="section-label">EDUCATION</div>
+                    <div class="section-title">教育资讯</div>
+                </div>
+                <span class="count-pill">1</span>
+                <span class="chevron">▼</span>
+            </button>
+            <div class="section-body">
+                <div class="news-item">
+                    <div class="news-header">
+                        <div class="score-badge">8.0</div>
+                        <div class="news-title">
+                            <a href="https://www.technologyreview.com/2026/03/02/1133814/i-checked-out-londons-biggest-ever-anti-ai-protest/" target="_blank">伦敦爆发最大规模反AI游行,抗议者涵盖"AI slop"到"人类灭绝"诉求</a>
+                            <div class="source-tag">MIT Technology Review · 2026.03.02</div>
+                        </div>
+                    </div>
+                    <div class="fact-grid">
+                        <div class="fact-col">
+                            <h4>What 是什么</h4>
+                            <p>2月28日,数百人在伦敦King's Cross科技中心游行,由Pause AI和Pull the Plug主办,称为<strong>"迄今最大反AI抗议"</strong>。诉求跨度极广。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>How 怎么做</h4>
+                            <p>行动特点:①"Pull the plug"/"Stop the slop"口号;②参与者背景多元;③氛围<strong>温和友好</strong>;④目标:提高公众意识+推动<strong>政府监管</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>Why 为什么</h4>
+                            <p>深层焦虑:①<strong>AI安全主义者</strong>认为AI是"人类最后的问题";②<strong>实用批评者</strong>担忧AI slop污染;③<strong>劳动力威胁</strong>。</p>
+                        </div>
+                        <div class="fact-col">
+                            <h4>影响与行动</h4>
+                            <p><strong>运动分化</strong>:从极端主义到务实派并存。<strong>效果存疑</strong>:科技公司"optimized to not care",但游行作为<strong>公众教育工具</strong>有价值。<strong>启示</strong>:AI伦理已成<strong>社会运动议题</strong>。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="stats-footer">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">精选篇数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">信源数量</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">核心板块</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">股票标的</div>
+            </div>
+        </div>
+        <div class="footer-credit">Generated by AI洋同学实验室 · AI Daily Intelligence</div>
+    </div>
+
+    <script>
+        function toggleSection(button) {
+            const section = button.closest('.section');
+            section.classList.toggle('collapsed');
+            section.classList.toggle('expanded');
+        }
+        function toggleExpand(button) {
+            const expandable = button.closest('.expandable');
+            expandable.classList.toggle('open');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const metaSection = document.querySelector('.meta-insight');
+            if (metaSection && metaSection.classList.contains('collapsed')) {
+                metaSection.classList.remove('collapsed');
+                metaSection.classList.add('expanded');
+            }
+        });
+    </script>
+</body>
+</html>
